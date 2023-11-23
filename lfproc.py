@@ -1,13 +1,9 @@
 
-from xarray.core.utils import FrozenDict
-from .spool import spool
 import numpy as np
 import pandas as pd
 import os
 import shutil
 from datetime import datetime
-from dascore.utils.patch import merge_patches
-from dascore.core import Patch
 from glob import glob
 import matplotlib.pyplot as plt
 
@@ -57,7 +53,7 @@ class lfproc:
         
         def lp_process(DASdata,bgind, edind):
             # low pass filter and downsampling
-            lfDAS = DASdata.pass_filter(time=(None,1/dt/2*0.9))\
+            lfDAS = DASdata.lp_filter(time=(None,1/dt/2*0.9))\
                         .sel(time=time_grid[bgind:edind]
                         ,method='nearest')
             lfDAS = lfDAS.update_attrs(d_time=dt)
